@@ -1,0 +1,174 @@
+{% extends 'manager/base.html' %}
+
+{% block content %}
+<style>
+    /* Estilos para el formulario de login (similares al de registro) */
+    .login-container {
+        max-width: 420px;
+        margin: 60px auto;
+        padding: 30px;
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        border: 1px solid #e0e0e0;
+    }
+    .login-container h2 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 25px;
+        font-weight: 600;
+    }
+    .form-group {
+        margin-bottom: 20px;
+        position: relative; /* Necesario para el botón de mostrar contraseña */
+    }
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: #555;
+        font-weight: 500;
+    }
+    .form-control {
+        width: 100%;
+        padding: 12px 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+        font-size: 16px;
+        transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    .form-control:focus {
+        border-color: #007bff;
+        outline: none;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    }
+    .errorlist {
+        list-style-type: none;
+        padding: 0;
+        color: #dc3545;
+        margin-top: 5px;
+        font-size: 0.9em;
+    }
+    .btn-submit {
+        width: 100%;
+        padding: 12px;
+        background-color: #007bff;
+        border: none;
+        border-radius: 5px;
+        color: white;
+        font-size: 18px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+    .btn-submit:hover {
+        background-color: #0056b3;
+    }
+    .form-options {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        font-size: 0.9em;
+    }
+    .form-options label {
+        display: flex;
+        align-items: center;
+        color: #555;
+    }
+    .form-options input[type="checkbox"] {
+        margin-right: 5px;
+    }
+    .form-options a {
+        color: #007bff;
+        text-decoration: none;
+    }
+    .form-options a:hover {
+        text-decoration: underline;
+    }
+    .register-link {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 0.9em;
+        color: #666;
+    }
+    .register-link a {
+        color: #007bff;
+        text-decoration: none;
+    }
+    .register-link a:hover {
+        text-decoration: underline;
+    }
+    /* Estilo para el botón de mostrar/ocultar contraseña */
+    .toggle-password {
+        position: absolute;
+        right: 15px;
+        top: 42px;
+        cursor: pointer;
+        user-select: none; /* Evita que el texto se seleccione */
+        color: #888;
+    }
+</style>
+
+<div class="login-container">
+    <h2>Iniciar Sesión</h2>
+    
+    <!-- Mostrar errores de login no específicos de un campo -->
+    {% if form.non_field_errors %}
+        <div class="errorlist">
+            {% for error in form.non_field_errors %}
+                <p>{{ error }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+
+        <!-- Campo de Username/Email -->
+        <div class="form-group">
+            <label for="{{ form.username.id_for_label }}">Usuario o Correo Electrónico</label>
+            <input type="text" name="{{ form.username.name }}" id="{{ form.username.id_for_label }}" class="form-control" placeholder="Introduce tu usuario o email" required autofocus>
+            {{ form.username.errors }}
+        </div>
+
+        <!-- Campo de Password -->
+        <div class="form-group">
+            <label for="{{ form.password.id_for_label }}">Contraseña Maestra</label>
+            <input type="password" name="{{ form.password.name }}" id="{{ form.password.id_for_label }}" class="form-control" placeholder="Introduce tu contraseña" required>
+            <span class="toggle-password" onclick="togglePasswordVisibility()">👁️</span>
+            {{ form.password.errors }}
+        </div>
+
+        <!-- Opciones extra: Recordarme y ¿Olvidaste tu contraseña? -->
+        <div class="form-options">
+            <label>
+                <input type="checkbox" name="remember_me"> Recordarme
+            </label>
+            <a href="#">¿Olvidaste tu contraseña?</a>
+        </div>
+
+        <!-- Botón de Envío -->
+        <button type="submit" class="btn-submit">Acceder</button>
+    </form>
+
+    <div class="register-link">
+        ¿Aún no tienes una cuenta? <a href="{% url 'register' %}">Regístrate aquí</a>
+    </div>
+</div>
+
+<script>
+    function togglePasswordVisibility() {
+        const passwordInput = document.getElementById('{{ form.password.id_for_label }}');
+        const toggleIcon = document.querySelector('.toggle-password');
+
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            toggleIcon.textContent = '🙈'; // Cambiar el icono
+        } else {
+            passwordInput.type = 'password';
+            toggleIcon.textContent = '👁️'; // Cambiar el icono de vuelta
+        }
+    }
+</script>
+{% endblock %}
