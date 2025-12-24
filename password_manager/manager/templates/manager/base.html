@@ -1,0 +1,33 @@
+<!-- manager/templates/base.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gestor de Contraseñas</title>
+    <style>
+        /* Estilos básicos que ya tenías */
+        body { font-family: sans-serif; margin: 0; }
+        nav { background-color: #333; padding: 1em; text-align: right; }
+        nav a { color: white; text-decoration: none; margin-left: 15px; }
+        nav a:hover { text-decoration: underline; }
+        main { padding: 2em; }
+        .password-item { border: 1px solid #ccc; padding: 1em; margin-bottom: 1em; border-radius: 5px; }
+        .password-item button { margin-left: 10px; }
+    </style>
+</head>
+<body>
+    <nav>
+        {% if user.is_authenticated %}
+            <span>Hola, {{ user.username }}!</span>
+            <a href="{% url 'dashboard' %}">Panel</a>
+            <a href="{% url 'add_password' %}">Añadir Contraseña</a>
+            <a href="/logout/">Cerrar Sesión</a> <!-- Necesitarás crear una vista de logout -->
+        {% else %}
+            <a href="{% url 'register' %}">Registrarse</a>
+            <a href="{% url 'login' %}">Iniciar Sesión</a>
+        {% endif %}
+    </nav>
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>
