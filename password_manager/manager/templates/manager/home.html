@@ -1,0 +1,121 @@
+<!-- manager/templates/manager/home.html -->
+{% extends 'manager/base.html' %}
+
+{% block content %}
+<style>
+    /* Estilos específicos para la página de inicio */
+    .hero {
+        text-align: center;
+        padding: 60px 20px;
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #e7e7e7;
+    }
+    .hero h1 {
+        font-size: 3em;
+        color: #0056b3;
+        margin-bottom: 10px;
+    }
+    .lead {
+        font-size: 1.5em;
+        color: #555;
+        max-width: 800px;
+        margin: 0 auto 20px auto;
+    }
+    .feature-section {
+        padding: 40px 20px;
+    }
+    .feature-section h2 {
+        text-align: center;
+        font-size: 2em;
+        color: #333;
+        margin-bottom: 20px;
+    }
+    .feature-list {
+        list-style: none;
+        padding: 0;
+        max-width: 800px;
+        margin: 0 auto;
+        font-size: 1.2em;
+    }
+    .feature-list li {
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+    }
+    .feature-list li::before {
+        content: attr(data-emoji);
+        font-size: 1.5em;
+        margin-right: 15px;
+    }
+    .cta-section {
+        text-align: center;
+        padding: 40px 20px;
+        background-color: #e9ecef;
+    }
+    .btn {
+        display: inline-block;
+        padding: 12px 25px;
+        font-size: 1.2em;
+        text-decoration: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .btn-primary {
+        background-color: #007bff;
+        color: white;
+        border: 1px solid #007bff;
+    }
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+</style>
+
+<!-- Sección Hero (Título y Subtítulo) -->
+<div class="hero">
+    <h1>Protege tu Vida Digital</h1>
+    <p class="lead">
+        Bienvenido a <strong>Password Manager</strong>, el gestor de contraseñas diseñado para proteger tu vida en línea con una potencia inigualable y una simplicidad absoluta. Olvídate de recordar docenas de claves: nosotros nos encargamos de la seguridad, para que tú puedas centrarte en lo que importa.
+    </p>
+</div>
+
+<!-- Sección 1: Descripción del Servicio -->
+<section class="feature-section">
+    <h2>¿Por qué necesitas un gestor de contraseñas?</h2>
+    <p style="text-align: center; max-width: 800px; margin: 0 auto;">
+        Hoy en día, cada cuenta en línea requiere una contraseña única y robusta. Reutilizar la misma clave o usar combinaciones sencillas es la puerta de entrada a los hackers. <strong>Password Manager</strong> soluciona este problema:
+    </p>
+    <ul class="feature-list">
+        <li data-emoji="🔒">Genera contraseñas indescifrables automáticamente para cada uno de tus sitios web.</li>
+        <li data-emoji="💾">Las almacena de forma encriptada en tu bóveda digital personal, accesible solo con tu clave maestra.</li>
+        <li data-emoji="🔄">Las rellena al instante cuando visitas tus páginas favoritas, en cualquier dispositivo.</li>
+        <li data-emoji="🛡️">Te alerta si alguna de tus contraseñas ha sido comprometida en una filtración de datos.</li>
+    </ul>
+</section>
+
+<!-- Sección 2: Guía de Navegación -->
+<section class="feature-section" style="background-color: #f8f9fa;">
+    <h2>Cómo Empezar en Tres Pasos Sencillos</h2>
+    <p style="text-align: center;">Empezar a navegar con total seguridad es muy fácil:</p>
+    <ol class="feature-list">
+        <li data-emoji="1️⃣"><strong>Regístrate en segundos:</strong> Haz clic en "Registrarse". Solo necesitarás elegir una dirección de correo electrónico y crear tu clave maestra (¡la última contraseña que tendrás que recordar!).</li>
+        <li data-emoji="2️⃣"><strong>Inicia sesión:</strong> Una vez registrado, usa tu correo y tu clave maestra para acceder a tu bóveda personal privada.</li>
+        <li data-emoji="3️⃣"><strong>¡Comienza a añadir contraseñas!</strong> Dentro de tu bóveda, el botón "Añadir Nueva Contraseña" te permitirá guardar los datos de acceso de cualquier sitio web.</li>
+    </ol>
+</section>
+
+<!-- Llamada a la Acción Principal (CTA) -->
+<section class="cta-section">
+    <h2>Protege tus cuentas hoy mismo.</h2>
+    <p style="font-size: 1.1em; margin-bottom: 20px;">Es gratis y no requiere instalación.</p>
+    
+    <a href="{% url 'register' %}" class="btn btn-primary">Comenzar →</a>
+    
+    <p style="margin-top: 20px;">
+        ¿Ya tienes una cuenta? <a href="{% url 'login' %}">Inicia sesión aquí</a> para acceder a tu bólvula.
+    </p>
+    <p style="font-size: 0.9em; color: #6c757d; margin-top: 15px;">
+        💡 <strong>Consejo de Seguridad:</strong> Tu clave maestra se hashea de forma segura y tus contraseñas se cifran con tecnología de grado bancario. Tus datos solo los ves tú.
+    </p>
+</section>
+
+{% endblock %}
