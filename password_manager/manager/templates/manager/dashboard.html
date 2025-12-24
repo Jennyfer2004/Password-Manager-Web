@@ -1,0 +1,293 @@
+{% extends 'manager/base.html' %}
+
+{% block content %}
+<div class="dashboard-header">
+    <h1>Tus Contraseñas Guardadas</h1>
+    <a href="{% url 'add_password' %}" class="btn btn-primary">+ Añadir Nueva Contraseña</a>
+</div>
+
+{% if entries %}
+    <div class="password-table-container">
+        <table class="password-table">
+            <thead>
+                <tr>
+                    <th>Sitio Web / Servicio</th>
+                    <th>Usuario</th> <!-- Asumiendo que añadirás un campo de usuario a tu modelo -->
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entry in entries %}
+                <tr>
+                    <td data-label="Sitio Web">
+                        <strong>{{ entry.website }}</strong>
+                    </td>
+                    <!-- Opcional: Si tu modelo PasswordEntry tiene un campo para el nombre de usuario del sitio -->
+                    <!-- <td data-label="Usuario">{{ entry.username|default:"N/A" }}</td> -->
+                    <td data-label="Usuario">-</td> <!-- Placeholder por ahora -->
+                    <td data-label="Acciones">
+                        <button class="btn-icon" onclick="revealAndCopy({{ entry.id }}, '{{ entry.website|escapejs }}')" title="Copiar Contraseña">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                        </button>
+                        
+                        <!-- BOTÓN EDITAR AHORA ACTIVO -->
+                        <a href="{% url 'edit_password' entry.id %}" class="btn-icon" title="Editar" style="color: #ffc107;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                        </a>
+                        
+                        <!-- BOTÓN ELIMINAR AHORA ACTIVO -->
+                        <!-- Usamos un formulario para la eliminación por seguridad (método POST) -->
+                        <form action="{% url 'delete_password' entry.id %}" method="post" style="display: inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-icon" title="Eliminar" style="color: #dc3545;" onclick="return confirm('¿Estás seguro de que quieres eliminar esta contraseña?');">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+{% else %}
+    <div class="empty-state">
+        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+        <h3>No hay contraseñas guardadas</h3>
+        <p>Empieza a asegurar tus cuentas añadiendo tu primera contraseña.</p>
+        <a href="{% url 'add_password' %}" class="btn btn-primary">+ Añadir tu Primera Contraseña</a>
+    </div>
+{% endif %}
+
+<!-- Contenedor para las notificaciones -->
+<div id="notification-container"></div>
+
+<script>
+async function revealAndCopy(entryId, websiteName) {
+    const button = event.target.closest('button');
+    const originalHTML = button.innerHTML;
+    
+    // Mostrar estado de carga
+    button.innerHTML = '<div class="spinner"></div>';
+    button.disabled = true;
+
+    try {
+        const response = await fetch(`/get-password/${entryId}/`);
+        if (!response.ok) {
+            throw new Error('Error en la respuesta del servidor.');
+        }
+        const data = await response.json();
+        
+        if (data.password) {
+            await navigator.clipboard.writeText(data.password);
+            showNotification(`Contraseña para ${websiteName} copiada al portapapeles.`, 'success');
+        } else {
+            showNotification('No se pudo encontrar la contraseña.', 'error');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        showNotification('Hubo un error al procesar la solicitud.', 'error');
+    } finally {
+        // Restaurar el botón
+        button.innerHTML = originalHTML;
+        button.disabled = false;
+    }
+}
+
+function showNotification(message, type) {
+    const container = document.getElementById('notification-container');
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    notification.textContent = message;
+
+    container.appendChild(notification);
+
+    // Eliminar la notificación después de 3 segundos
+    setTimeout(() => {
+        notification.style.opacity = '0';
+        setTimeout(() => {
+            if (notification.parentNode) {
+                container.removeChild(notification);
+            }
+        }, 300); // Tiempo para la transición de fade-out
+    }, 3000);
+}
+</script>
+
+<style>
+/* --- Estilos Generales y del Dashboard --- */
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+.dashboard-header h1 {
+    margin: 0;
+    color: #333;
+}
+
+/* --- Botones --- */
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    border: none;
+    font-size: 16px;
+}
+.btn:hover {
+    transform: translateY(-2px);
+}
+.btn-primary {
+    background-color: #007bff;
+    color: white;
+}
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+.btn-icon {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 4px;
+    transition: background-color 0.2s, transform 0.2s;
+    color: #6c757d;
+}
+.btn-icon:hover {
+    background-color: #f0f0f0;
+    transform: scale(1.1);
+}
+
+/* --- Estado Vacío --- */
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #888;
+}
+.empty-state h3 {
+    margin-top: 15px;
+    margin-bottom: 10px;
+    color: #555;
+}
+.empty-state p {
+    margin-bottom: 25px;
+}
+
+/* --- Tabla de Contraseñas --- */
+.password-table-container {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    overflow: hidden; /* Para que las esquinas redondeadas se apliquen a la tabla */
+}
+.password-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 16px;
+}
+.password-table th, .password-table td {
+    padding: 15px 20px;
+    text-align: left;
+    border-bottom: 1px solid #e9ecef;
+}
+.password-table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: #495057;
+}
+.password-table tbody tr:last-child td {
+    border-bottom: none;
+}
+.password-table tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+/* --- Notificaciones (Toast) --- */
+#notification-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+.notification {
+    background-color: #333;
+    color: white;
+    padding: 15px 20px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    opacity: 1;
+    transition: opacity 0.3s ease-in-out;
+    min-width: 250px;
+}
+.notification.success {
+    background-color: #28a745;
+}
+.notification.error {
+    background-color: #dc3545;
+}
+
+/* --- Spinner de Carga --- */
+.spinner {
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #007bff;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto;
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* --- Responsive Design para Móviles --- */
+@media (max-width: 768px) {
+    .dashboard-header {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+    }
+    .password-table-container {
+        overflow-x: auto; /* Permite scroll horizontal en la tabla */
+    }
+    .password-table thead {
+        display: none; /* Oculta el encabezado de la tabla */
+    }
+    .password-table, .password-table tbody, .password-table tr, .password-table td {
+        display: block;
+        width: 100%;
+    }
+    .password-table tr {
+        margin-bottom: 20px;
+        border: 1px solid #e9ecef;
+        border-radius: 5px;
+        padding: 10px;
+    }
+    .password-table td {
+        text-align: right;
+        padding-left: 50%;
+        position: relative;
+        border-bottom: none;
+    }
+    .password-table td::before {
+        content: attr(data-label); /* Usa el atributo data-label como título */
+        position: absolute;
+        left: 15px;
+        width: calc(50% - 30px);
+        padding-right: 10px;
+        text-align: left;
+        font-weight: bold;
+        color: #495057;
+    }
+}
+</style>
+{% endblock %}
