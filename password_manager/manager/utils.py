@@ -1,4 +1,3 @@
-# manager/utils.py
 from cryptography.fernet import Fernet
 import os
 
