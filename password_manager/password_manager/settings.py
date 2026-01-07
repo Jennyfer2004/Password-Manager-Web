@@ -122,3 +122,36 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_COOKIE_AGE = 3600  # 1 hora
+
+# En tu archivo settings.py
+
+# --- CONFIGURACIÓN DE CORREO ELECTRÓNICO ---
+# Es una buena práctica usar variables de entorno para las credenciales,
+# pero para depurar, puedes ponerlas directamente aquí (¡no las subas a GitHub!).
+
+# El backend que Django usará para enviar correos. SMTP es el estándar.
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+# Servidor SMTP de tu proveedor de correo.
+# Para Gmail: smtp.gmail.com
+# Para Outlook/Hotmail: smtp-mail.outlook.com
+EMAIL_HOST = 'smtp.gmail.com' 
+
+# Puerto para el servidor. 587 es el estándar para TLS.
+EMAIL_PORT = 587
+
+# Usa TLS (seguridad). Debe ser True para la mayoría de los proveedores modernos.
+EMAIL_USE_TLS = True
+
+# Tu dirección de correo electrónico completa.
+EMAIL_HOST_USER = 'jennifer.ss2004.cuentatrabajo@gmail.com' 
+
+# ¡LA CLAVE! No es tu contraseña normal.
+# Debes generar una "Contraseña de Aplicación" en tu cuenta de Google.
+EMAIL_HOST_PASSWORD = 'dwhf kmak ypcc gnue' 
+
+# La dirección desde la que se enviarán los correos.
+DEFAULT_FROM_EMAIL = 'jennifer.ss2004.cuentatrabajo@gmail.com' 
