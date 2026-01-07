@@ -1,0 +1,12 @@
+{% autoescape off %}
+Hola {{ user.username }},
+
+Gracias por registrarte en [Nombre de tu Sitio]. Por favor, haz clic en el siguiente enlace para verificar tu cuenta y activarla:
+
+http://{{ domain }}{% url 'activate' uidb64=uid token=token %}
+
+Si no creaste esta cuenta, simplemente ignora este correo.
+
+Gracias,
+El equipo de [Nombre de tu Sitio]
+{% endautoescape %}
