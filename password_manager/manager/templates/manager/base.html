@@ -20,7 +20,7 @@
             <span>Hola, {{ user.username }}!</span>
             <a href="{% url 'dashboard' %}">Panel</a>
             <a href="{% url 'add_password' %}">Añadir Contraseña</a>
-            <a href="/logout/">Cerrar Sesión</a> <!-- Necesitarás crear una vista de logout -->
+            <a href="{% url 'logout' %}">Cerrar sesión</a>
         {% else %}
             <a href="{% url 'register' %}">Registrarse</a>
             <a href="{% url 'login' %}">Iniciar Sesión</a>
