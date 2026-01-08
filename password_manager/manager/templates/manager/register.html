@@ -205,7 +205,7 @@
             {{ form.username.errors }}
         </div>
         
-        <!-- CAMPO DE CORREO ELECTRÓNICO A AÑADIR -->
+        <!-- CAMPO DE CORREO ELECTRÓNICO -->
         <div class="form-group">
             <label for="{{ form.email.id_for_label }}">Correo Electrónico</label>
             <input type="email" 
@@ -245,13 +245,13 @@
                 </button>
             </div>
             
-            <!-- Generador de Contraseñas Personalizado (RESTAURADO) -->
+            <!-- Generador de Contraseñas  -->
             <div class="password-generator">
                 <button type="button" id="generate-password-btn" class="btn-generate">Generar Contraseña Segura</button>
                 <button type="button" id="toggle-options-btn" class="btn-generate">Opciones</button>
             </div>
             
-            <!-- Opciones del Generador (RESTAURADO) -->
+            <!-- Opciones del Generador -->
             <div id="password-options" style="display: none;">
                 <div class="password-options">
                     <div class="password-option">
@@ -316,10 +316,9 @@
     </div>
 </div>
 
-<!-- Toast para notificaciones -->
 <div id="toast" class="toast"></div>
 
-<!-- 1. Incluir la librería zxcvbn -->
+<!-- Incluir la librería zxcvbn -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/zxcvbn/4.4.2/zxcvbn.js"></script>
 
 <script>
@@ -330,7 +329,7 @@
     const strengthText = document.getElementById('password-strength-text');
     const toast = document.getElementById('toast');
     
-    // Referencias al generador de contraseñas (RESTAURADO)
+    // Referencias al generador de contraseñas 
     const generatePasswordBtn = document.getElementById('generate-password-btn');
     const toggleOptionsBtn = document.getElementById('toggle-options-btn');
     const passwordOptions = document.getElementById('password-options');
@@ -369,7 +368,6 @@
         setTimeout(() => { copyPassword1Btn.innerHTML = originalHTML; }, 2000);
     }
 
-    // --- EVENT LISTENERS ---
     togglePassword1Btn.addEventListener('click', () => { togglePasswordVisibility(passwordInput, togglePassword1Btn); });
     togglePassword2Btn.addEventListener('click', () => { togglePasswordVisibility(confirmPasswordInput, togglePassword2Btn); });
     copyPassword1Btn.addEventListener('click', copyPasswordToClipboard);
@@ -402,7 +400,7 @@
         `;
     });
 
-    // --- GENERADOR DE CONTRASEÑAS PERSONALIZADO (RESTAURADO Y MEJORADO) ---
+    // --- GENERADOR DE CONTRASEÑAS PERSONALIZADO ---
     toggleOptionsBtn.addEventListener('click', () => {
         passwordOptions.style.display = passwordOptions.style.display === 'none' ? 'block' : 'none';
     });
@@ -414,7 +412,6 @@
         const includeSymbols = document.getElementById('include-symbols').checked;
         const passwordLength = parseInt(document.getElementById('password-length').value);
         
-        // Conjuntos de caracteres mejorados y sin ambigüedades
         const uppercase = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
         const lowercase = 'abcdefghjkmnpqrstuvwxyz';
         const numbers = '23456789';
