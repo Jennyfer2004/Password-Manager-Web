@@ -1,10 +1,9 @@
-<!-- manager/templates/base.html -->
 <!DOCTYPE html>
 <html>
 <head>
     <title>Gestor de Contraseñas</title>
     <style>
-        /* Estilos básicos que ya tenías */
+
         body { font-family: sans-serif; margin: 0; }
         nav { background-color: #333; padding: 1em; text-align: right; }
         nav a { color: white; text-decoration: none; margin-left: 15px; }
@@ -20,7 +19,7 @@
             <span>Hola, {{ user.username }}!</span>
             <a href="{% url 'dashboard' %}">Panel</a>
             <a href="{% url 'add_password' %}">Añadir Contraseña</a>
-            <a href="/logout/">Cerrar Sesión</a> <!-- Necesitarás crear una vista de logout -->
+            <a href="{% url 'logout' %}">Cerrar sesión</a>
         {% else %}
             <a href="{% url 'register' %}">Registrarse</a>
             <a href="{% url 'login' %}">Iniciar Sesión</a>

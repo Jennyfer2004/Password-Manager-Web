@@ -1,0 +1,59 @@
+{% extends 'manager/base.html' %}
+
+{% block content %}
+<style>
+    .activation-invalid-container {
+        max-width: 450px;
+        margin: 60px auto;
+        padding: 30px;
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        border: 1px solid #e0e0e0;
+        text-align: center;
+    }
+    .activation-invalid-container h2 {
+        color: #dc3545; /* Rojo para indicar error */
+        margin-bottom: 20px;
+        font-weight: 600;
+    }
+    .error-icon {
+        font-size: 48px;
+        color: #dc3545;
+        margin-bottom: 20px;
+    }
+    .activation-invalid-container p {
+        color: #555;
+        line-height: 1.6;
+        margin-bottom: 25px;
+    }
+    .btn-back {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #6c757d; /* Gris neutro */
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+    }
+    .btn-back:hover {
+        background-color: #5a6268;
+    }
+</style>
+
+<div class="activation-invalid-container">
+    <div class="error-icon">⚠️</div>
+    <h2>Enlace de Activación Inválido</h2>
+    
+    <p>
+        El enlace de activación que has utilizado no es válido o ha expirado.
+        Esto puede ocurrir si ya usaste el enlace anteriormente o si ha pasado demasiado tiempo.
+    </p>
+    
+    <p>
+        Por favor, intenta registrarte de nuevo o contacta con el soporte si el problema persiste.
+    </p>
+    
+    <a href="{% url 'register' %}" class="btn-back">Volver al Registro</a>
+</div>
+{% endblock %}
