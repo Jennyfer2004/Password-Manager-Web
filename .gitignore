@@ -1,0 +1,6 @@
+# Archivos de entorno (NUNCA subir) [citation:1]
+.env
+.env.local
+*.env
+__pycache__/
+*.py[cod]
