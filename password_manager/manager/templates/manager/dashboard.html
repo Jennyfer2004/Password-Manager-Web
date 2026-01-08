@@ -12,7 +12,7 @@
             <thead>
                 <tr>
                     <th>Sitio Web / Servicio</th>
-                    <th>Usuario</th> <!-- Asumiendo que añadirás un campo de usuario a tu modelo -->
+
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -22,21 +22,18 @@
                     <td data-label="Sitio Web">
                         <strong>{{ entry.website }}</strong>
                     </td>
-                    <!-- Opcional: Si tu modelo PasswordEntry tiene un campo para el nombre de usuario del sitio -->
-                    <!-- <td data-label="Usuario">{{ entry.username|default:"N/A" }}</td> -->
-                    <td data-label="Usuario">-</td> <!-- Placeholder por ahora -->
+                    
                     <td data-label="Acciones">
                         <button class="btn-icon" onclick="revealAndCopy({{ entry.id }}, '{{ entry.website|escapejs }}')" title="Copiar Contraseña">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
                         </button>
                         
-                        <!-- BOTÓN EDITAR AHORA ACTIVO -->
+                        <!-- BOTÓN EDITAR -->
                         <a href="{% url 'edit_password' entry.id %}" class="btn-icon" title="Editar" style="color: #ffc107;">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
                         </a>
                         
-                        <!-- BOTÓN ELIMINAR AHORA ACTIVO -->
-                        <!-- Usamos un formulario para la eliminación por seguridad (método POST) -->
+                        <!-- BOTÓN ELIMINAR -->
                         <form action="{% url 'delete_password' entry.id %}" method="post" style="display: inline;">
                             {% csrf_token %}
                             <button type="submit" class="btn-icon" title="Eliminar" style="color: #dc3545;" onclick="return confirm('¿Estás seguro de que quieres eliminar esta contraseña?');">
@@ -59,7 +56,6 @@
     </div>
 {% endif %}
 
-<!-- Contenedor para las notificaciones -->
 <div id="notification-container"></div>
 
 <script>
@@ -88,7 +84,7 @@ async function revealAndCopy(entryId, websiteName) {
         console.error('Error:', error);
         showNotification('Hubo un error al procesar la solicitud.', 'error');
     } finally {
-        // Restaurar el botón
+
         button.innerHTML = originalHTML;
         button.disabled = false;
     }
@@ -115,7 +111,7 @@ function showNotification(message, type) {
 </script>
 
 <style>
-/* --- Estilos Generales y del Dashboard --- */
+
 .dashboard-header {
     display: flex;
     justify-content: space-between;
@@ -165,7 +161,6 @@ function showNotification(message, type) {
     transform: scale(1.1);
 }
 
-/* --- Estado Vacío --- */
 .empty-state {
     text-align: center;
     padding: 60px 20px;
@@ -209,7 +204,6 @@ function showNotification(message, type) {
     background-color: #f8f9fa;
 }
 
-/* --- Notificaciones (Toast) --- */
 #notification-container {
     position: fixed;
     top: 20px;
@@ -249,7 +243,6 @@ function showNotification(message, type) {
     100% { transform: rotate(360deg); }
 }
 
-/* --- Responsive Design para Móviles --- */
 @media (max-width: 768px) {
     .dashboard-header {
         flex-direction: column;
@@ -257,10 +250,10 @@ function showNotification(message, type) {
         text-align: center;
     }
     .password-table-container {
-        overflow-x: auto; /* Permite scroll horizontal en la tabla */
+        overflow-x: auto; 
     }
     .password-table thead {
-        display: none; /* Oculta el encabezado de la tabla */
+        display: none; 
     }
     .password-table, .password-table tbody, .password-table tr, .password-table td {
         display: block;
@@ -279,7 +272,7 @@ function showNotification(message, type) {
         border-bottom: none;
     }
     .password-table td::before {
-        content: attr(data-label); /* Usa el atributo data-label como título */
+        content: attr(data-label); 
         position: absolute;
         left: 15px;
         width: calc(50% - 30px);
